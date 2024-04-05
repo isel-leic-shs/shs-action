@@ -17,12 +17,12 @@ jobs:
 
       - name: test dependency-check
         run: |
-          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON --project SHS -o "./reports" --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql:https://0b7c-2001-8a0-7bc0-e400-fae8-8972-59f5-63db.ngrok-0free.app/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./jdbc-drivers/PostgreSQL/42.6.0/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" -n
+          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON --project SHS --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql:https://0b7c-2001-8a0-7bc0-e400-fae8-8972-59f5-63db.ngrok-0free.app/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./jdbc-drivers/PostgreSQL/42.6.0/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" -n
       - name : Upload the Dependency-Check report
         uses : actions/upload-artifact@v2
         with :
           name : dependency check-report
-          path : reports/dependency-check-report.html
+          path : dependency-check-report.html
 
 
 
