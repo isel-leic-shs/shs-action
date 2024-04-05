@@ -15,17 +15,9 @@ jobs:
           rm dependency-check-9.1.0-release.zip 
           chmod +x dependency-check/bin/dependency-check.sh 
 
-      - name : test dependency-check
-        run : |
-          ./dependency-check/bin/dependency-check.sh --scan . \
-          --format HTML --format JSON \
-          --project SHS \
-          --out reports \
-          --dbDriverName "org.postgresql.Driver" \
-          --connectionString "jdbc:postgresql:https://0b7c-2001-8a0-7bc0-e400-fae8-8972-59f5-63db.ngrok-free.app/dependencycheck?currentSchema=public" \
-          --dbUser "dcclient" --dbPassword "dev02" \
-          --dbDriverPath "./jdbc-drivers/PostgreSQL/42.6.0/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" -n  
-
+      - name: test dependency-check
+        run: |
+          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON --project SHS --out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql:https://0b7c-2001-8a0-7bc0-e400-fae8-8972-59f5-63db.ngrok-0free.app/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./jdbc-drivers/PostgreSQL/42.6.0/org/postgresql/postgresql/42.6.0/postgresql-42.6.0.jar" -n
       - name : Upload the Dependency-Check report
         uses : actions/upload-artifact@v2
         with :
