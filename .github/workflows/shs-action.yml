@@ -20,7 +20,7 @@ jobs:
           ./dependency-check/bin/dependency-check.sh --scan . \
           --format HTML --format JSON \
           --project SHS \
-          -out reports \
+          --out reports \
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "jdbc:postgresql:https://0b7c-2001-8a0-7bc0-e400-fae8-8972-59f5-63db.ngrok-free.app/dependencycheck?currentSchema=public" \
           --dbUser "dcclient" --dbPassword "dev02" \
