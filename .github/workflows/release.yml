@@ -1,0 +1,28 @@
+name: Release
+on:
+  workflow_dispatch:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name : Install Java
+        run : sudo apt-get install default-jre
+
+      - name : test dependency-check
+        run : |
+          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --project SHS --out reports --nvdApiKey "3fd85911-12f9-474d-8081-a52d69747465"
+
+      - name : Upload Relatório Dependency-Check
+        uses : actions/upload-artifact@v2
+        with :
+          name : dependency check-report
+          path : reports/dependency-check-report.html
+
+
+
+
+
+

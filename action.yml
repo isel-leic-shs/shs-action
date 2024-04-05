@@ -1,0 +1,17 @@
+name: SHS Analyser GitHub Action
+description: |-
+  'GitHub Action that handles security scans using dependency-check and publish output to SHS service'
+
+branding:
+  icon: 'lock'
+  color: 'blue'
+
+inputs:
+  exampleInput:
+    description: Example Input description
+    default: ""
+    required: true
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
