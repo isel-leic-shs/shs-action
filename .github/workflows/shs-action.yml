@@ -19,7 +19,7 @@ jobs:
 
       - name: test dependency-check
         run: |
-          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://b79a-2001-818-e80b-f600-7c51-84b8-d454-2d48.ngrok-free.app/" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
+          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:19110/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
       - name : Upload the Dependency-Check report
         uses : actions/upload-artifact@v2
         with :
