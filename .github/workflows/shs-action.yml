@@ -21,9 +21,9 @@ jobs:
         run: |
           ./dependency-check/bin/dependency-check.sh --scan . \ 
           --format HTML --format JSON \
-          -o reports 
+          -out reports \
           --dbDriverName "org.postgresql.Driver" \ 
-          --connectionString "jdbc:postgresql:https://2921-2001-818-e80b-f600-7c51-84b8-d454-2d48.ngrok-free.app/dependencycheck?currentSchema=public" \
+          --connectionString "jdbc:postgresql://869f-2001-818-e80b-f600-7c51-84b8-d454-2d48.ngrok-free.app/dependencycheck?currentSchema=public" \
           --dbUser "dcclient" \
           --dbPassword "dev02" \
           --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
