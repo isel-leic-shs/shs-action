@@ -1,0 +1,14 @@
+
+name: manifest
+on:
+  workflow_dispatch:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: github repository information
+        run: echo '${{ toJson(github.event) }}' | jq
+        shell: bash
