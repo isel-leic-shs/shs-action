@@ -21,7 +21,7 @@ runs:
     - name: test dependency-check
       shell: bash
       run: |
-        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:19110/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
+        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:10957/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
 
     - name : Upload the Dependency-Check report
       uses : actions/upload-artifact@v2
