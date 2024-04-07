@@ -14,6 +14,11 @@ runs:
         rm dependency-check-9.1.0-release.zip 
         chmod +x dependency-check/bin/dependency-check.sh 
 
+    - name: Get the driver for the database
+      shell: bash
+      run: |
+        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P driver
+
     - name: make dir for reports
       shell: bash
       run: mkdir reports
@@ -21,13 +26,14 @@ runs:
     - name: test dependency-check
       shell: bash
       run: |
-        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:10957/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
+        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:10957/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./postgresql-42.6.0.jar" -n
 
     - name : Upload the Dependency-Check report
       uses : actions/upload-artifact@v2
       with :
         name : dependency check-report
         path : reports/dependency-check-report.html
+
     - name : make dr for json and manifest
       shell: bash
       run: mkdir my-files
