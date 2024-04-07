@@ -25,3 +25,8 @@ jobs:
 
       - name: list all files in the ubuntu
         run: ls
+
+      - name : Send ZIP to Endpoint
+        run : |
+          ENDPOINT_URL="https://shs-uny0.onrender.com/zip"
+          curl -X POST -H "Content-Type: application/zip" --data-binary "@my-files/my-files.zip" "$ENDPOINT_URL"
