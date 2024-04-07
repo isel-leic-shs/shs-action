@@ -1,0 +1,57 @@
+name: shs-action
+on:
+  workflow_dispatch:
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Dependency-Check CLI
+        run: |
+          wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.1.0/dependency-check-9.1.0-release.zip 
+          unzip dependency-check-9.1.0-release.zip 
+          rm dependency-check-9.1.0-release.zip 
+          chmod +x dependency-check/bin/dependency-check.sh 
+
+      - name: make dir for reports
+        run: mkdir reports
+
+      - name: test dependency-check
+        run: |
+          ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:19110/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
+
+      - name : Upload the Dependency-Check report
+        uses : actions/upload-artifact@v2
+        with :
+          name : dependency check-report
+          path : reports/dependency-check-report.html
+      - name : make dr for json and manifest
+        run: mkdir my-files
+
+      - name: Send the .json report file to send folder
+        run: |
+          mv reports/dependency-check-report.json my-files/dependency-check-report.json
+
+      - name: Create a simple manifest file
+        run:  |
+          echo '{
+            "repository_name": "${{ github.event.repository.name }}",
+            "repository_id": "${{ github.repository.id }}",
+            "repository_owner": "${{ github.repository.owner.login }}",
+            "repository_owner_id": "${{ github.repository.owner.id }}"
+          }' > my-files/repository_info.json
+
+      - name: zip files to send to SHS API
+        run: zip -r my-files.zip my-files
+
+      - name : Send ZIP to Endpoint
+        run : |
+          ENDPOINT_URL="https://shs-uny0.onrender.com/zip"
+          curl -X POST -H "Content-Type: application/zip" --data-binary "@my-files/my-files.zip" "$ENDPOINT_URL"
+
+
+
+
+
