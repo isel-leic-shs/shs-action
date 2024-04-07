@@ -1,5 +1,5 @@
 
-name: manifest
+name: manifest-test
 on:
   workflow_dispatch:
 jobs:
