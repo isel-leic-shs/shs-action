@@ -1,8 +1,12 @@
 name: SHS Analyser GitHub Action
 description: |-
   'GitHub Action that handles security scans using dependency-check and publish output to SHS service'
+
 runs:
   using: "composite"
+  defaults:
+    run:
+      shell: bash
   steps:
     - name: Install Dependency-Check CLI
       run: |
