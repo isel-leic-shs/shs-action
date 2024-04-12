@@ -41,9 +41,9 @@ runs:
       run: |
         echo '{
           "repository_name": "${{ github.event.repository.name }}",
-          "repository_id": "${{ github.repository.id }}",
-          "repository_owner": "${{ github.repository.owner.login }}",
-          "repository_owner_id": "${{ github.repository.owner.id }}",
+          "repository_id": "${{ github.event.repository.id }}",
+          "repository_owner": "${{ github.event.repository.owner.login }}",
+          "repository_owner_id": "${{ github.event.repository.owner.id }}",
           "repository_tag_name": "${{ github.ref_name }}"
         }' > my-files/repository_info.json
 
