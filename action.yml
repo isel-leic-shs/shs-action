@@ -1,10 +1,9 @@
-name: SHS Analyser GitHub Action
-description: |-
-  'GitHub Action that handles security scans using dependency-check and publish output to SHS service'
+name: 'SHS Analyser GitHub Action'
+description: |
+  GitHub Action that handles security scans using dependency-check and publish output to SHS service
 
 runs:
   using: "composite"
-
   steps:
     - name: Install Dependency-Check CLI
       shell: bash
@@ -28,13 +27,7 @@ runs:
       run: |
         ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:10957/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
 
-    - name : Upload the Dependency-Check report
-      uses : actions/upload-artifact@v2
-      with :
-        name : dependency check-report
-        path : reports/dependency-check-report.html
-
-    - name : make dr for json and manifest
+    - name: make dir for json and manifest
       shell: bash
       run: mkdir my-files
 
@@ -45,20 +38,30 @@ runs:
 
     - name: Create a simple manifest file
       shell: bash
-      run:  |
+      run: |
         echo '{
           "repository_name": "${{ github.event.repository.name }}",
           "repository_id": "${{ github.repository.id }}",
           "repository_owner": "${{ github.repository.owner.login }}",
-          "repository_owner_id": "${{ github.repository.owner.id }}"
+          "repository_owner_id": "${{ github.repository.owner.id }}",
+          "repository_tag_name": "${{ github.ref_name }}"
         }' > my-files/repository_info.json
 
-    - name: zip files to send to SHS API
+    - name: Zip files to send to SHS API
       shell: bash
       run: zip -r my-files.zip my-files
 
-    - name : Send ZIP to Endpoint
+    - name: Send ZIP to Endpoint
       shell: bash
-      run : |
+      run: |
         ENDPOINT_URL="https://shs-uny0.onrender.com/zip"
         curl -X POST -H "Content-Type: application/zip" --data-binary "@my-files/my-files.zip" "$ENDPOINT_URL"
+
+outputs:
+  repository_info:
+    description: "Information of the repository"
+    value: "my-files/repository_info.json"
+
+  report_html:
+    description: "Path to the HTML report file"
+    value: "reports/dependency-check-report.html"
