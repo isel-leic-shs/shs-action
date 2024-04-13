@@ -25,7 +25,7 @@ runs:
     - name: test dependency-check
       shell: bash
       run: |
-        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:11002/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
+        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://2.tcp.eu.ngrok.io:12564/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
 
     - name: make dir for json and manifest
       shell: bash
