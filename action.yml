@@ -16,13 +16,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Create project directory if it doesn't exist
-      shell: bash
-      run: mkdir project
-
-    - name: Move repository contents to project directory
-      shell: bash
-      run: mv ./ project/
 
     - name: Install Dependency-Check CLI
       shell: bash
