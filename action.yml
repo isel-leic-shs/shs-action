@@ -68,7 +68,7 @@ runs:
       id: detect_project_type
       shell: bash
       run: |
-        if [ -f build.gradle ]; then
+        if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
           PROJECT_TYPE="gradle"
         elif [ -f pom.xml ]; then
           PROJECT_TYPE="maven"
