@@ -17,7 +17,7 @@ runs:
         rm dependency-check-9.1.0-release.zip 
         mkdir -p no-check/dependency-check
         mv dependency-check/* no-check/dependency-check/
-        chmod +x no-check/dependency-check/bin/dependency-check.s 
+        chmod +x no-check/dependency-check/bin/dependency-check.sh 
 
     - name: Get the driver for the database
       shell: bash
@@ -31,7 +31,7 @@ runs:
     - name: test dependency-check
       shell: bash
       run: |
-        ./dependency-check/bin/dependency-check.sh \
+        ./no-check/dependency-check/bin/dependency-check.sh  \
           --scan . \
           --format HTML \
           --format JSON \
