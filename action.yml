@@ -59,7 +59,7 @@ runs:
           --format HTML \
           --format JSON \
           -out reports \
-          --exclude "no-check/*" \
+          --exclude "./no-check" \
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "${{inputs.connection_string}}" \
           --dbUser "${{inputs.db_user}}" \
