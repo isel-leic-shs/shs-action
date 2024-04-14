@@ -39,6 +39,19 @@ runs:
       shell: bash
       run: mkdir reports
 
+    - name: testing
+      shell: bash
+      run:
+        echo "==================================================================================================="
+
+    - name: testing
+      shell: bash
+      run:
+        ls -la
+    - name: testing
+      shell: bash
+      run:
+        echo "==================================================================================================="
     - name: test dependency-check
       shell: bash
       run: |
@@ -85,7 +98,7 @@ runs:
         else
           PROJECT_TYPE="unknown"
         fi
-        echo "::set-output name=project_type::$PROJECT_TYPE"
+        echo "PROJECT_TYPE=$PROJECT_TYPE" >> $GITHUB_ENV
 
     - name: Create a simple manifest file
       shell: bash
@@ -94,7 +107,7 @@ runs:
           "repository_name": "${{ github.event.repository.name }}",
           "repository_owner": "${{ github.event.repository.owner.login }}",
           "repository_tag_name": "${{ github.ref_name }}"
-          "project_type": "${{steps.detect_project_type.outputs.project_type}}"
+          "project_type": "${{ env.PROJECT_TYPE }}"
         }' > my-files/repository_info.json
 
     - name: Zip files to send to SHS API
