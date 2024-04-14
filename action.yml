@@ -35,6 +35,12 @@ runs:
       shell: bash
       run: mkdir reports
 
+    - name: debug
+      shell: bash
+      run: |
+        echo  "======================================="
+        ls -la
+        echo "==========================================="
     - name: test dependency-check
       shell: bash
       run: |
