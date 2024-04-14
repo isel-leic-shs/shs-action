@@ -16,6 +16,9 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Create project directory if it doesn't exist
+      shell: bash
+      run: mkdir -p project
 
     - name: Move repository contents to project directory
       shell: bash
