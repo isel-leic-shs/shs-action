@@ -16,9 +16,10 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: creating a dir for files that should not be scanned
+
+    - name: Move repository contents to project directory
       shell: bash
-      run: mkdir no-check
+      run: mv * project/
 
     - name: Install Dependency-Check CLI
       shell: bash
@@ -27,44 +28,30 @@ runs:
         unzip dependency-check-9.1.0-release.zip 
         rm dependency-check-9.1.0-release.zip
         mv dependency-check no-check/
-        chmod +x no-check/dependency-check/bin/dependency-check.sh 
+        chmod +x dependency-check/bin/dependency-check.sh 
 
     - name: Get the driver for the database
       shell: bash
       run: |
-        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P no-check/driver
+        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P driver
 
     - name: make dir for reports
       shell: bash
       run: mkdir reports
 
-    - name: testing
-      shell: bash
-      run:
-        echo "==================================================================================================="
-
-    - name: testing
-      shell: bash
-      run:
-        ls -la
-    - name: testing
-      shell: bash
-      run:
-        echo "==================================================================================================="
     - name: test dependency-check
       shell: bash
       run: |
-        ./no-check/dependency-check/bin/dependency-check.sh  \
-          --scan . \
+        ./dependency-check/bin/dependency-check.sh  \
+          --scan ./project \
           --format HTML \
           --format JSON \
           -out reports \
-          --exclude "./no-check/" \
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "${{inputs.connection_string}}" \
           --dbUser "${{inputs.db_user}}" \
           --dbPassword "${{inputs.db_password}}" \
-          --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
+          --dbDriverPath "./driver/postgresql-42.6.0.jar" \
           -n
 
     - name: make dir for json and manifest
