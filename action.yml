@@ -38,9 +38,9 @@ runs:
           -out reports \
           --exclude "no-check/*" \
           --dbDriverName "org.postgresql.Driver" \
-          --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:10957/dependencycheck?currentSchema=public" \
+          --connectionString "jdbc:postgresql://0.tcp.eu.ngrok.io:17466/dependencycheck?currentSchema=public" \
           --dbUser "dcclient" \
-          --dbPassword "${{ secrets.DB_PASSWORD }}" \
+          --dbPassword "dev02" \
           --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
     - name: make dir for json and manifest
@@ -57,9 +57,7 @@ runs:
       run: |
         echo '{
           "repository_name": "${{ github.event.repository.name }}",
-          "repository_id": "${{ github.event.repository.id }}",
           "repository_owner": "${{ github.event.repository.owner.login }}",
-          "repository_owner_id": "${{ github.event.repository.owner.id }}",
           "repository_tag_name": "${{ github.ref_name }}"
         }' > my-files/repository_info.json
 
