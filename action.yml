@@ -49,9 +49,9 @@ runs:
           -out reports \
           --exclude "no-check/*" \
           --dbDriverName "org.postgresql.Driver" \
-          --connectionString "${{ inputs.connection_string }}" \
-          --dbUser "${{ inputs.db_user }}" \
-          --dbPassword "${{ inputs.db_password }}" \
+          --connectionString "${{inputs.connection_string}}" \
+          --dbUser "${{inputs.db_user}}" \
+          --dbPassword "${{inputs.db_password}}" \
           --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
 
