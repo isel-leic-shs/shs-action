@@ -25,9 +25,8 @@ runs:
       run: |
         wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.1.0/dependency-check-9.1.0-release.zip 
         unzip dependency-check-9.1.0-release.zip 
-        rm dependency-check-9.1.0-release.zip 
-        mkdir -p no-check/dependency-check
-        mv dependency-check/* no-check/dependency-check/
+        rm dependency-check-9.1.0-release.zip
+        mv dependency-check no-check/
         chmod +x no-check/dependency-check/bin/dependency-check.sh 
 
     - name: Get the driver for the database
