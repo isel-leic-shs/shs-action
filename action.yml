@@ -2,21 +2,38 @@ name: 'SHS Analyser GitHub Action'
 description: |
   GitHub Action that handles security scans using dependency-check and publish output to SHS service
 
+inputs:
+  db_user:
+    description: "Database username"
+    required: true
+  db_password:
+    description: "Database password"
+    required: true
+  connection_string:
+    description: "Database connection string"
+    required: true
+
 runs:
   using: "composite"
   steps:
+    - name: creating a dir for files that should not be scanned
+      shell: bash
+      run: mkdir no-check
+
     - name: Install Dependency-Check CLI
       shell: bash
       run: |
         wget https://github.com/jeremylong/DependencyCheck/releases/download/v9.1.0/dependency-check-9.1.0-release.zip 
         unzip dependency-check-9.1.0-release.zip 
         rm dependency-check-9.1.0-release.zip 
-        chmod +x dependency-check/bin/dependency-check.sh 
+        mkdir -p no-check/dependency-check
+        mv dependency-check/* no-check/dependency-check/
+        chmod +x no-check/dependency-check/bin/dependency-check.sh 
 
     - name: Get the driver for the database
       shell: bash
       run: |
-        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P driver
+        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P no-check/driver
 
     - name: make dir for reports
       shell: bash
@@ -25,7 +42,18 @@ runs:
     - name: test dependency-check
       shell: bash
       run: |
-        ./dependency-check/bin/dependency-check.sh --scan . --format HTML --format JSON -out reports --dbDriverName "org.postgresql.Driver" --connectionString "jdbc:postgresql://5.tcp.eu.ngrok.io:11002/dependencycheck?currentSchema=public" --dbUser "dcclient" --dbPassword "dev02" --dbDriverPath "./driver/postgresql-42.6.0.jar" -n
+        ./no-check/dependency-check/bin/dependency-check.sh  \
+          --scan . \
+          --format HTML \
+          --format JSON \
+          -out reports \
+          --exclude "no-check/*" \
+          --dbDriverName "org.postgresql.Driver" \
+          --connectionString "${{ inputs.connection_string }}" \
+          --dbUser "${{ inputs.db_user }}" \
+          --dbPassword "${{ inputs.db_password }}" \
+          --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
+          -n
 
     - name: make dir for json and manifest
       shell: bash
@@ -36,15 +64,37 @@ runs:
       run: |
         mv reports/dependency-check-report.json my-files/dependency-check-report.json
 
+    - name: Determine project type
+      id: detect_project_type
+      shell: bash
+      run: |
+        if [ -f build.gradle ]; then
+          PROJECT_TYPE="gradle"
+        elif [ -f pom.xml ]; then
+          PROJECT_TYPE="maven"
+        elif [ -f package.json ]; then
+          if grep -q '"react":' package.json; then
+            PROJECT_TYPE="react"
+          elif grep -q '"@angular/core":' package.json; then
+            PROJECT_TYPE="angular"
+          elif grep -q '"node":' package.json; then
+            PROJECT_TYPE="nodejs"
+          else
+            PROJECT_TYPE="unknown"
+          fi
+        else
+          PROJECT_TYPE="unknown"
+        fi
+        echo "::set-output name=project_type::$PROJECT_TYPE"
+
     - name: Create a simple manifest file
       shell: bash
       run: |
         echo '{
           "repository_name": "${{ github.event.repository.name }}",
-          "repository_id": "${{ github.event.repository.id }}",
           "repository_owner": "${{ github.event.repository.owner.login }}",
-          "repository_owner_id": "${{ github.event.repository.owner.id }}",
           "repository_tag_name": "${{ github.ref_name }}"
+          "project_type": "'"$PROJECT_TYPE"'"
         }' > my-files/repository_info.json
 
     - name: Zip files to send to SHS API
