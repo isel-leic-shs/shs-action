@@ -94,7 +94,7 @@ runs:
           "repository_name": "${{ github.event.repository.name }}",
           "repository_owner": "${{ github.event.repository.owner.login }}",
           "repository_tag_name": "${{ github.ref_name }}"
-          "project_type": "'"$PROJECT_TYPE"'"
+          "project_type": "${{steps.detect_project_type.outputs.project_type}}"
         }' > my-files/repository_info.json
 
     - name: Zip files to send to SHS API
