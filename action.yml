@@ -67,7 +67,7 @@ runs:
       shell: bash
       run: |
         cd ./project && 
-        if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
+        if [ -f .gradle ] ; then
           PROJECT_TYPE="gradle"
         elif [ -f pom.xml ]; then
           PROJECT_TYPE="maven"
@@ -111,6 +111,6 @@ outputs:
     description: "Information of the repository"
     value: "my-files/repository_info.json"
 
-  report_html:
+  dependency_check_report:
     description: "Path to the HTML report file"
     value: "reports/dependency-check-report.html"

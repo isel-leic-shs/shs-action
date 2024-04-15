@@ -10,13 +10,19 @@ GitHub Action that handles security scans using dependency-check and publish out
 
 You should save create a secret for user (not crucial) and a secret for password (crucial). 
 
+## Outputs 
+- `dependency_check_report`: Report directly from the CLI scan
 ## Trigger
 
 This action should runs on tag creation.
 
 ## Job
 
-The job `analyze` runs on the latest version of Ubuntu.
+* The job should runs on  Ubuntu (e.g. ubuntu-latest).
+* The github checkout should be done in the directory `porject`.
+So it is mandatory to set the input `path: "project"` in the `actions/checkout@v4`
+* The job include a extra step for nodejs, angular and react projects. 
+* In the last step of the action we save the report in the action `Artifacts`
 
 ### Steps for the action to work. 
 
@@ -44,7 +50,7 @@ sequenceDiagram
 
 ```
 
-### Workflow example. 
+### Workflow example for maven and gradle projects. 
 ```yaml
    name: shs-action
 
@@ -59,12 +65,9 @@ sequenceDiagram
 
        steps:
          - uses: actions/checkout@v4
-
-         - name: Print DB User and Password
-           run: |
-             echo "DB User: ${{ secrets.DB_USER }}"
-             echo "DB Password: ${{ secrets.DB_PASSWORD }}"
-
+           with:
+             path: "project"
+             
          - name: Run SHS Analyser
            id: shs-analyser
            uses: isel-leic-shs/shs-action@main
@@ -72,4 +75,39 @@ sequenceDiagram
              db_user: ${{secrets.DB_USER }}
              db_password: ${{secrets.DB_PASSWORD}}
              connection_string: "jdbc:postgresql://7.tcp.eu.ngrok.io:12032/dependencycheck?currentSchema=public" 
+  ```
+
+### Workflow example for projects based on package.json like react, nodejs and angular.
+```yaml
+name: shs-action
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "project"
+
+      - name: Install npm
+        working-directory: project
+        run: npm install
+
+      - name: Run SHS Analyser
+        id: shs-analyser
+        uses: isel-leic-shs/shs-action@main
+        with:
+          db_user: ${{secrets.DB_USER }}
+          db_password: ${{secrets.DB_PASSWORD}}
+          connection_string: "jdbc:postgresql://0.tcp.eu.ngrok.io:11216/dependencycheck?currentSchema=public"
+
+      - name: Upload the Dependency-Check report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency check-report
+          path: "${{steps.shs-analyser.outputs.report_html}}"
   ```
