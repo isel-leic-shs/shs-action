@@ -23,7 +23,7 @@ runs:
     - name: Get the driver for the database
       shell: bash
       run: |
-        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar no-check/driver
+        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P no-check/driver
 
     - name: Install Dependency-Check CLI
       shell: bash
