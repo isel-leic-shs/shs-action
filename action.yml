@@ -16,17 +16,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: debug
+    - name: creating a dir for files that should not be scanned
       shell: bash
-      run: ls -la
-
-    - name: Move to project directory
-      shell: bash
-      run: cd ..
-
-    - name: debug
-      shell: bash
-      run: ls -la
+      run: mkdir no-check
 
     - name: Install Dependency-Check CLI
       shell: bash
@@ -35,29 +27,23 @@ runs:
         unzip dependency-check-9.1.0-release.zip 
         rm dependency-check-9.1.0-release.zip
         mv dependency-check no-check/
-        chmod +x dependency-check/bin/dependency-check.sh 
+        chmod +x no-check/dependency-check/bin/dependency-check.sh 
 
     - name: Get the driver for the database
       shell: bash
       run: |
-        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P driver
+        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P no-check/driver
 
     - name: make dir for reports
       shell: bash
       run: mkdir reports
 
-    - name: debug
-      shell: bash
-      run: |
-        echo  "======================================="
-        ls -la
-        echo "==========================================="
-
     - name: test dependency-check
       shell: bash
       run: |
-        ./dependency-check/bin/dependency-check.sh  \
-          --scan ./project \
+        ./no-check/dependency-check/bin/dependency-check.sh  \
+          --scan . \
+          --exclude ./no-check \
           --format HTML \
           --format JSON \
           -out reports \
@@ -65,7 +51,7 @@ runs:
           --connectionString "${{inputs.connection_string}}" \
           --dbUser "${{inputs.db_user}}" \
           --dbPassword "${{inputs.db_password}}" \
-          --dbDriverPath "./driver/postgresql-42.6.0.jar" \
+          --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
 
     - name: make dir for json and manifest
