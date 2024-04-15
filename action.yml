@@ -18,14 +18,15 @@ runs:
   steps:
     - name: debug
       shell: bash
-      run: |
-        echo  "======================================="
-        ls -la
-        echo "==========================================="
+      run: ls -la
 
     - name: Move to project directory
       shell: bash
-      run: cd ./
+      run: cd ..
+
+    - name: debug
+      shell: bash
+      run: ls -la
 
     - name: Install Dependency-Check CLI
       shell: bash
@@ -34,7 +35,7 @@ runs:
         unzip dependency-check-9.1.0-release.zip 
         rm dependency-check-9.1.0-release.zip
         mv dependency-check no-check/
-        chmod +x ./dependency-check/bin/dependency-check.sh 
+        chmod +x dependency-check/bin/dependency-check.sh 
 
     - name: Get the driver for the database
       shell: bash
