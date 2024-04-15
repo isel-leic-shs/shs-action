@@ -20,6 +20,11 @@ runs:
       shell: bash
       run: mkdir no-check
 
+    - name: Get the driver for the database
+      shell: bash
+      run: |
+        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar no-check/driver
+
     - name: Install Dependency-Check CLI
       shell: bash
       run: |
@@ -29,11 +34,6 @@ runs:
         mv dependency-check no-check/
         chmod +x no-check/dependency-check/bin/dependency-check.sh 
 
-    - name: Get the driver for the database
-      shell: bash
-      run: |
-        wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P no-check/driver
-
     - name: make dir for reports
       shell: bash
       run: mkdir reports
@@ -42,8 +42,7 @@ runs:
       shell: bash
       run: |
         ./no-check/dependency-check/bin/dependency-check.sh  \
-          --scan . \
-          --exclude ./no-check \
+          --scan ./project \
           --format HTML \
           --format JSON \
           -out reports \
@@ -67,6 +66,7 @@ runs:
       id: detect_project_type
       shell: bash
       run: |
+        cd ./project && 
         if [ -f build.gradle ] || [ -f build.gradle.kts ]; then
           PROJECT_TYPE="gradle"
         elif [ -f pom.xml ]; then
