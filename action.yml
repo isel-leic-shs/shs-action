@@ -79,7 +79,7 @@ runs:
           elif grep -q '"node":' package.json; then
             PROJECT_TYPE="nodejs"
           else
-            PROJECT_TYPE="unknown"
+            PROJECT_TYPE="nodejs"
           fi
         else
           PROJECT_TYPE="unknown"
