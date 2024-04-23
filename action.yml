@@ -92,6 +92,7 @@ runs:
         echo '{
           "repository_name": "${{ github.event.repository.name }}",
           "repository_owner": "${{ github.event.repository.owner.login }}",
+          "repository_description": "${{ github.event.repository.description }}",
           "repository_tag_name": "${{ github.ref_name }}"
           "project_type": "${{ env.PROJECT_TYPE }}"
         }' > my-files/repository_info.json
