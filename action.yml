@@ -90,12 +90,13 @@ runs:
       shell: bash
       run: |
         echo '{
-          "repositoryName": "${{github.event.repository.name}}@${{github.event.repository.owner.login }}",
-          "repositoryDescription": "${{ github.event.repository.description }}",
-          "repositoryTagName": "${{ github.ref_name }}",
-          "projectType": "${{ env.PROJECT_TYPE }}"
+          "repository_name": "${{ github.event.repository.name }}",
+          "repository_owner": "${{ github.event.repository.owner.login }}",
+          "repository_description": "${{ github.event.repository.description }}",
+          "repository_tag_name": "${{ github.ref_name }}",
+          "project_type": "${{ env.PROJECT_TYPE }}"
         }' > my-files/repository_info.json
-
+        
     - name: Zip files to send to SHS API
       shell: bash
       run: zip -r my-files.zip my-files
