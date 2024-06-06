@@ -90,7 +90,7 @@ runs:
       shell: bash
       run: |
         echo '{
-          "repositoryName": "${{ github.event.repository.name }}@${{ github.event.repository.owner.login }}",
+          "repositoryName": "${{ github.event.repository.owner.login }}@${{ github.event.repository.name }}",
           "repositoryDescription": "${{ github.event.repository.description }}",
           "repositoryTagName": "${{ github.ref_name }}",
           "projectType": "${{ env.PROJECT_TYPE }}"
