@@ -1,6 +1,6 @@
 # Foss Inventory 
 
-## Project isel-leic-shs@shs-action and release test_tagv1.0
+## Project isel-leic-shs@shs-action and release test_tagv2.0
 
 ## Created on: Fri Jul 19 16:25:50 WEST 2024 
 
