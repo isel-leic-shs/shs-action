@@ -9,12 +9,14 @@ inputs:
   db_password:
     description: "Database password"
     required: true
-  connection_string:
-    description: "Database connection string"
-    required: true
   shs_token:
     description: "Database connection string"
     required: true
+  connection_string:
+    default: "jdbc:postgresql://4.tcp.eu.ngrok.io:15320/dependencycheck?currentSchema=public"
+    description: "Database connection string"
+    required: false
+
 
 runs:
   using: "composite"
@@ -52,7 +54,7 @@ runs:
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "${{inputs.connection_string}}" \
           --dbUser "${{inputs.db_user}}" \
-          --dbPassword "${{inputs.db_password}}" \
+          --dbPassword "${{inputs.db_password}}" \5
           --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
 
@@ -69,8 +71,8 @@ runs:
       id: detect_project_type
       shell: bash
       run: |
-        cd ./project && 
-        if [ -f .gradle ] ; then
+        cd ./project 
+        if [ -f .gradle ] || [ -f build.gradle ] || [ -f settings.gradle ]; then
           PROJECT_TYPE="gradle"
         elif [ -f pom.xml ]; then
           PROJECT_TYPE="maven"
@@ -106,7 +108,7 @@ runs:
     - name: Send ZIP to Endpoint
       shell: bash
       run: |
-         curl https://567c-2001-8a0-7bc0-8800-6044-6b99-9727-e618.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
+         curl https://7ad9-85-240-18-78.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
 
 outputs:
   repository_info:
