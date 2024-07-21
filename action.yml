@@ -54,7 +54,7 @@ runs:
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "${{inputs.connection_string}}" \
           --dbUser "dcclient" \
-          --dbPassword "dcclient" \5
+          --dbPassword "dev02" \5
           --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
 
