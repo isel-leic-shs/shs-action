@@ -108,7 +108,7 @@ runs:
     - name: Send ZIP to Endpoint
       shell: bash
       run: |
-         curl https://7ad9-85-240-18-78.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
+         curl https://squirrel-cheerful-visually.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
 
 outputs:
   repository_info:
