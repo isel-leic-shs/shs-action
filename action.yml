@@ -3,15 +3,7 @@ description: |
   GitHub Action that handles security scans using dependency-check and publish output to SHS service
 
 inputs:
-  db_user:
-    description: "Database username"
-    required: true
-  db_password:
-    description: "Database password"
-    required: true
-  shs_token:
-    description: "Database connection string"
-    required: true
+
   connection_string:
     default: "jdbc:postgresql://4.tcp.eu.ngrok.io:15320/dependencycheck?currentSchema=public"
     description: "Database connection string"
@@ -53,8 +45,8 @@ runs:
           -out reports \
           --dbDriverName "org.postgresql.Driver" \
           --connectionString "${{inputs.connection_string}}" \
-          --dbUser "${{inputs.db_user}}" \
-          --dbPassword "${{inputs.db_password}}" \
+          --dbUser "${{env.db_user}}" \
+          --dbPassword "${{env.db_password}}" \
           --dbDriverPath "./no-check/driver/postgresql-42.6.0.jar" \
           -n
 
@@ -108,7 +100,7 @@ runs:
     - name: Send ZIP to Endpoint
       shell: bash
       run: |
-         curl https://squirrel-cheerful-visually.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{inputs.shs_token}}"
+         curl https://squirrel-cheerful-visually.ngrok-free.app/zip -X POST -F "file=@my-files.zip" -H "Authorization: Bearer ${{env.shs_token}}"
 
 outputs:
   repository_info:
