@@ -9,7 +9,6 @@ inputs:
     description: "Database connection string"
     required: false
 
-
 runs:
   using: "composite"
   steps:
@@ -63,7 +62,7 @@ runs:
       id: detect_project_type
       shell: bash
       run: |
-        cd ./project 
+        cd ./project &&
         if [ -f .gradle ] || [ -f build.gradle ] || [ -f settings.gradle ]; then
           PROJECT_TYPE="gradle"
         elif [ -f pom.xml ]; then
