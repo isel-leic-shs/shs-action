@@ -62,23 +62,22 @@ runs:
       id: detect_project_type
       shell: bash
       run: |
-        cd ./project &&
-        if [ -f .gradle ] || [ -f build.gradle ] || [ -f settings.gradle ]; then
-          PROJECT_TYPE="gradle"
-        elif [ -f pom.xml ]; then
-          PROJECT_TYPE="maven"
-        elif [ -f package.json ]; then
-          if grep -q '"react":' package.json; then
-            PROJECT_TYPE="react"
-          elif grep -q '"@angular/core":' package.json; then
-            PROJECT_TYPE="angular"
-          elif grep -q '"node":' package.json; then
-            PROJECT_TYPE="nodejs"
-          else
-            PROJECT_TYPE="nodejs"
-          fi
+        if [ -f project/build.gradle ] || [ -f project/settings.gradle ]; then
+         PROJECT_TYPE="gradle"
+        elif [ -f project/pom.xml ]; then
+         PROJECT_TYPE="maven"
+        elif [ -f project/package.json ]; then
+         if grep -q '"react":' project/package.json; then
+           PROJECT_TYPE="react"
+         elif grep -q '"@angular/core":' project/package.json; then
+           PROJECT_TYPE="angular"
+         elif grep -q '"node":' project/package.json; then
+           PROJECT_TYPE="nodejs"
+         else
+           PROJECT_TYPE="nodejs"
+         fi
         else
-          PROJECT_TYPE="unknown"
+         PROJECT_TYPE="unknown"
         fi
         echo "PROJECT_TYPE=$PROJECT_TYPE" >> $GITHUB_ENV
 
