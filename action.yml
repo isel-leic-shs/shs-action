@@ -5,7 +5,7 @@ description: |
 inputs:
 
   connection_string:
-    default: "jdbc:postgresql://4.tcp.eu.ngrok.io:15320/dependencycheck?currentSchema=public"
+    default: "jdbc:postgresql://0.tcp.eu.ngrok.io:16107/dependencycheck?currentSchema=public"
     description: "Database connection string"
     required: false
 
