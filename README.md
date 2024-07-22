@@ -2,10 +2,13 @@
 
 GitHub Action that handles security scans using dependency-check and publish output to SHS service
 
-## Inputs
 
-- `db_user`: Database username (*required*)
-- `db_password`: Database password (*required*)
+## Env 
+- `api_token`: SHS API token (*required*) with secret name `SHS_API_TOKEN`
+- `db_user`: Database username (*required*) with secret name `SHS_DB_USER`
+- `db_password`: Database password (*required*) with secret name `SHS_DB_PASSWORD`
+
+## Inputs
 - `connection_string`: Database connection string (*required*)
 
 You should save create a secret for user (not crucial) and a secret for password (crucial). 
@@ -52,29 +55,37 @@ sequenceDiagram
 
 ### Workflow example for maven and gradle projects. 
 ```yaml
-   name: shs-action
+name: shs-action
 
-   on:
-     workflow_dispatch:
-     push:
-       tags:
-         - '*'
-   jobs:
-     release:
-       runs-on: ubuntu-latest
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: "project"
 
-       steps:
-         - uses: actions/checkout@v4
-           with:
-             path: "project"
-             
-         - name: Run SHS Analyser
-           id: shs-analyser
-           uses: isel-leic-shs/shs-action@main
-           with:
-             db_user: ${{secrets.DB_USER }}
-             db_password: ${{secrets.DB_PASSWORD}}
-             connection_string: "jdbc:postgresql://7.tcp.eu.ngrok.io:12032/dependencycheck?currentSchema=public" 
+      - name: Run SHS Analyser
+        id: shs-analyser
+        uses: isel-leic-shs/shs-action@main
+        env:
+          db_user: "${{secrets.SHS_DB_USER}}"
+          db_password: "${{secrets.SHS_DB_PASSWORD}}"
+          shs_token: "${{secrets.SHS_API_TOKEN}}"
+
+      - name: Print github information
+        run: cat "${{ steps.shs-analyser.outputs.repository_info}}"
+
+      - name: Upload the Dependency-Check report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dependency check-report
+          path: "${{steps.shs-analyser.outputs.dependency_check_report}}"
   ```
 
 ### Workflow example for projects based on package.json like react, nodejs and angular.
@@ -100,14 +111,17 @@ jobs:
       - name: Run SHS Analyser
         id: shs-analyser
         uses: isel-leic-shs/shs-action@main
-        with:
-          db_user: ${{secrets.DB_USER }}
-          db_password: ${{secrets.DB_PASSWORD}}
-          connection_string: "jdbc:postgresql://0.tcp.eu.ngrok.io:11216/dependencycheck?currentSchema=public"
+        env:
+          db_user: "${{secrets.SHS_DB_USER}}"
+          db_password: "${{secrets.SHS_DB_PASSWORD}}"
+          shs_token: "${{secrets.SHS_API_TOKEN}}"
+
+      - name: Print github information
+        run: cat "${{ steps.shs-analyser.outputs.repository_info}}"
 
       - name: Upload the Dependency-Check report
         uses: actions/upload-artifact@v2
         with:
           name: dependency check-report
-          path: "${{steps.shs-analyser.outputs.report_html}}"
+          path: "${{steps.shs-analyser.outputs.dependency_check_report}}"
   ```
